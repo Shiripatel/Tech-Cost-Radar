@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Cost Radar - CFO Dashboard</title>
+  <!-- Google Fonts Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="breadcrumbs">Insights</div>
+      <h1 class="main-title">AI Spend</h1>
+      
+      <!-- Nav Tabs -->
+      <nav class="tabs-navigation">
+        <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="switchTab('briefing')">Briefing</button>
+        <button class="tab-btn" onclick="switchTab('api-keys')">API keys</button>
+        <button class="tab-btn" onclick="switchTab('vendor-overlap')">Vendor Overlap</button>
+        <button class="tab-btn" onclick="switchTab('it-spend')">IT Spend & ERP</button>
+        <button class="tab-btn" onclick="switchTab('data-schema')">Data Requirements</button>
+      </nav>
+    </header>
+
+    <!-- Content -->
+    <main class="dashboard-content">
+      
+      <!-- TAB 1: OVERVIEW -->
+      <section id="overview" class="tab-content active">
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          
+          <div class="kpi-card" onclick="switchTab('api-keys')">
+            <div class="kpi-title-row">
+              <span class="kpi-title">Total spend</span>
+              <svg class="kpi-settings-icon" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+            <div class="kpi-val-row">
+              <div class="kpi-value">
+                <span>$106K</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </div>
+              <span class="kpi-badge up">↑ 32%</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" onclick="alert('Price per million tokens is calculated by mapping overall API logs to pricing metadata structures.')">
+            <div class="kpi-title-row">
+              <span class="kpi-title">Price per million tokens</span>
+              <svg class="kpi-settings-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+            </div>
+            <div class="kpi-val-row">
+              <div class="kpi-value">
+                <span>$9.51</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </div>
+              <span class="kpi-badge up">↑ 17%</span>
+            </div>
+          </div>
+
+          <div class="kpi-card" onclick="switchTab('vendor-overlap')">
+            <div class="kpi-title-row">
+              <span class="kpi-title">Overlapping AI Licenses (Waste)</span>
+              <svg class="kpi-settings-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h-3V9h3V7c0-1.66 1.34-3 3-3h1v3h-1c-.55 0-1 .45-1 1v1h2v3h-2v5z"/></svg>
+            </div>
+            <div class="kpi-val-row">
+              <div class="kpi-value" id="kpi-overlap-saving">
+                <span>$24.3K</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </div>
+              <span class="kpi-badge down">↓ 18% Optimizable</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Main Chart Card -->
+        <div class="chart-container-card">
+          <div class="chart-header">
+            <h3 class="chart-title">Total spend over time</h3>
+            <div class="chart-controls">
+              <button class="chart-control-btn" id="ctrl-daily" onclick="updateSpendChart('daily')">Daily</button>
+              <button class="chart-control-btn active" id="ctrl-weekly" onclick="updateSpendChart('weekly')">Weekly</button>
+              <button class="chart-control-btn" id="ctrl-monthly" onclick="updateSpendChart('monthly')">Monthly</button>
+            </div>
+          </div>
+          <div class="canvas-wrapper">
+            <canvas id="spendChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Breakdown Table / Summary -->
+        <div class="panel-white">
+          <h3 class="panel-title-md" style="margin-bottom:1rem;">Top AI Subsidies by Department</h3>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Department Name</th>
+                  <th>Core Models Deployed</th>
+                  <th>Avg. Vol / Month</th>
+                  <th>Monthly Spend</th>
+                  <th>Business ROI Impact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Engineering</strong></td>
+                  <td>GitHub Copilot, Claude 3.5, GPT-4o</td>
+                  <td>14.8M tokens</td>
+                  <td>$42,500</td>
+                  <td><span class="kpi-badge up">+ 28% Dev Velocity</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Customer Support</strong></td>
+                  <td>GPT-4o mini, custom agent gateways</td>
+                  <td>32.1M tokens</td>
+                  <td>$31,200</td>
+                  <td><span class="kpi-badge up">- 40% Ticket Resolution Time</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Marketing & Copy</strong></td>
+                  <td>Jasper, ChatGPT Enterprise</td>
+                  <td>4.5M tokens</td>
+                  <td>$18,800</td>
+                  <td><span class="kpi-badge down">- 2% Traffic Lead Value</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Operations (RPA)</strong></td>
+                  <td>Llama-3-70B (Hosted self), Gemini 1.5</td>
+                  <td>10.2M tokens</td>
+                  <td>$13,500</td>
+                  <td><span class="kpi-badge up">+ 15% Data Mining Speed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: BRIEFING -->
+      <section id="briefing" class="tab-content">
+        <div class="cards-layout-2col">
+          <div class="panel-white">
+            <h2 class="panel-title-md">CFO Executive Summary Brief</h2>
+            <p class="panel-description">AI Costs are escalating quickly. This briefing summarizes cost trends, optimizations, audit guidelines, and vendor overlap opportunities for Q3.</p>
+            <div style="line-height:1.7; font-size:1.05rem;">
+              <p><strong>🚨 Key Overrun Drivers:</strong> The Engineering team's transition to Claude 3.5 Sonnet has increased prompt token depth by <strong>45%</strong>. A large amount of this is redundant system prompts occurring in parallel test environments.</p>
+              <br>
+              <p><strong>💡 Recommendation:</strong> Implement a semantic caching gateway (for instance, Helicone or LiteLLM gateway layers) to prevent sending duplicate codebase prompts to LLMs. This could cut Engineering AI costs by <strong>$12,000 monthly</strong>.</p>
+              <br>
+              <p><strong>💼 Contract Renewals:</strong> The ChatGPT Enterprise agreement (100 seats) is up for review in 45 days. We currently see an average seat utilization of only <strong>60%</strong>. We can safely down-scale to 60 seats or transition inactive users to OpenAI API keys via local chatbots.</p>
+            </div>
+          </div>
+          <div class="panel-white">
+            <h2 class="panel-title-md">Finance & Audit Checklist</h2>
+            <p class="panel-description">Strategic audits recommended to control technology spend sprawl.</p>
+            <ul class="audit-checklist">
+              <li class="audit-checklist-item">
+                <input type="checkbox" class="audit-checkbox" checked>
+                <div class="audit-checklist-text">
+                  <div class="audit-checklist-title">Enforce Gateway Tracking</div>
+                  <div class="audit-checklist-desc">Route all internal developer AI tokens through an API proxy key with user metadata logs.</div>
+                </div>
+              </li>
+              <li class="audit-checklist-item">
+                <input type="checkbox" class="audit-checkbox">
+                <div class="audit-checklist-text">
+                  <div class="audit-checklist-title">Consolidate Redundant SaaS AI Tools</div>
+                  <div class="audit-checklist-desc">Identify duplicate functionalities across departments (e.g. Jasper vs Copy.ai).</div>
+                </div>
+              </li>
+              <li class="audit-checklist-item">
+                <input type="checkbox" class="audit-checkbox">
+                <div class="audit-checklist-text">
+                  <div class="audit-checklist-title">Setup Seat Recapture Rules</div>
+                  <div class="audit-checklist-desc">Automatically alert managers of any Copilot seats showing zero prompt queries in 30 days.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: API KEYS -->
+      <section id="api-keys" class="tab-content">
+        <div class="panel-white">
+          <div class="chart-header">
+            <div>
+              <h2 class="panel-title-md">Active API Credentials & Cost Limits</h2>
+              <p class="panel-description" style="margin-bottom:0;">Allocate monthly spend limits directly per API Key to restrict runaway auto-scaling scripts.</p>
+            </div>
+            <button class="btn-primary" onclick="openAlertModal('New Service Master Key', 0, 'New key - configure limits')">
+              <span>+ Create Key</span>
+            </button>
+          </div>
+
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>API Key Name</th>
+                  <th>Assigned Owner</th>
+                  <th>June Spend</th>
+                  <th>Current Limit Override</th>
+                  <th>SLA Risk</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="api-keys-table-body">
+                <!-- Rows loaded via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: VENDOR OVERLAP & AUDITS -->
+      <section id="vendor-overlap" class="tab-content font-size-change">
+        <div class="cards-layout-2col">
+          <div class="panel-white">
+            <h2 class="panel-title-md">Vendor Redundancy Analysis
+              <span style="font-size: 0.95rem; font-weight: normal; color: var(--text-secondary);" id="overlap-savings-total">Identified Waste: $2,820/mo</span>
+            </h2>
+            <p class="panel-description">AI capabilities are frequently duplicated across multiple application suites, leading to paying double licensing fees for the same business value.</p>
+            
+            <div id="vendor-overlaps-list">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </div>
+
+          <div class="panel-white">
+            <h2 class="panel-title-md">Vendor Consolidation Simulator</h2>
+            <p class="panel-description">Slide to model the ROI of consolidating redundant developer assistants, summarization tools, and generative design suites.</p>
+            
+            <div class="slider-group">
+              <div class="slider-labels">
+                <span>Consolidation Rate (Unifications)</span>
+                <span id="label-consolidation-pct">40%</span>
+              </div>
+              <input type="range" class="slider-input" id="slider-consolidation" min="0" max="100" value="40" oninput="calculateSimulatorResult()">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-labels">
+                <span>Reclaim Inactive/Idle Seats</span>
+                <span id="label-reclaim-pct">60%</span>
+              </div>
+              <input type="range" class="slider-input" id="slider-reclaim" min="0" max="100" value="60" oninput="calculateSimulatorResult()">
+            </div>
+
+            <div class="projection-value-box">
+              <span class="kpi-title" style="text-align: center;">Estimated Annual Savings</span>
+              <div class="projection-num" id="val-simulated-savings">$32,480</div>
+              <span class="kpi-badge up" style="align-self: center;" id="val-roi-increase">+14% Margins Profit</span>
+            </div>
+            
+            <button class="btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="alert('Exporting consolidation audit report... In production, this generates a procurement recommendation briefing.')">
+              Export Audit Action Report
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: IT SPEND & ERP -->
+      <section id="it-spend" class="tab-content">
+        <div class="cards-layout-2col">
+          <div class="panel-white">
+            <h2 class="panel-title-md">Unified IT Spend Portfolio</h2>
+            <p class="panel-description">AI Cost Radar is designed to scale into all IT expense tracks—including cloud infrastructure (AWS/Azure), ERP licensing (SAP/Oracle), CRM systems (Salesforce), and database layers.</p>
+            
+            <div class="data-table-container" style="margin-top:0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>IT Asset Category</th>
+                    <th>Vendor/Platform</th>
+                    <th>Current Seat Price</th>
+                    <th>Subscribers</th>
+                    <th>Monthly Run-rate</th>
+                    <th>Audit Risk Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>ERP Suite</strong></td>
+                    <td>SAP S/4HANA Cloud</td>
+                    <td>$185 / user</td>
+                    <td>450 Users</td>
+                    <td>$83,250</td>
+                    <td><span class="badge-status active">Active & Clean</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>CRM & Sales</strong></td>
+                    <td>Salesforce Enterprise</td>
+                    <td>$150 / user</td>
+                    <td>320 Users</td>
+                    <td>$48,000</td>
+                    <td><span class="kpi-badge down" style="font-size:0.8rem; padding:0.25rem 0.5rem;">32 Unused Seats</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Developer IDE</strong></td>
+                    <td>JetBrains Fleet & IDEs</td>
+                    <td>$22 / user</td>
+                    <td>180 Users</td>
+                    <td>$3,960</td>
+                    <td><span class="badge-status inactive">Unassigned</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>AI Token Gateway</strong></td>
+                    <td>LiteLLM Enterprise</td>
+                    <td>Usage-based</td>
+                    <td>All Channels</td>
+                    <td>$12,500</td>
+                    <td><span class="badge-status active">Optimized</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel-white">
+            <h2 class="panel-title-md font-bold">Total IT Enterprise Forecast</h2>
+            <p class="panel-description">Model the financial projection of blending modern AI workloads with existing core IT infrastructure overhead.</p>
+
+            <div class="roi-metric-flex">
+              <span class="roi-metric-label">Current Monthly IT Run-rate</span>
+              <span class="roi-metric-val">$147,710</span>
+            </div>
+            <div class="roi-metric-flex">
+              <span class="roi-metric-label">AI Token Growth Projection (20% QoQ)</span>
+              <span class="roi-metric-val">+$2,500</span>
+            </div>
+            <div class="roi-metric-flex">
+              <span class="roi-metric-label">ERP Renewal Uplift Estimate (5%)</span>
+              <span class="roi-metric-val">+$4,162 / mo</span>
+            </div>
+            <div class="roi-metric-flex" style="border-bottom:none;">
+              <span class="roi-metric-label">Potential Unified Savings</span>
+              <span class="roi-metric-val benefit">$35,800 / yr</span>
+            </div>
+
+            <button class="btn-secondary" style="width: 100%; margin-top: 1.5rem;" onclick="alert('In production, this initiates automatic connector integrations with ServiceNow ITAM & ERP Billing APIs.')">
+              Manage IT Integrations
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: DATA SCHEMAS / REQUIREMENTS -->
+      <section id="data-schema" class="tab-content">
+        <div class="schema-grid">
+          <div>
+            <h2 class="panel-title-md">Integration Fields & Schemas</h2>
+            <p class="panel-description">To populate AI Cost Radar, your organization must feed the following data sets. Click on a schema type to generate and review the JSON API layout.</p>
+            
+            <div class="schema-nav-item active" id="schema-nav-tokens" onclick="selectSchema('tokens')">
+              <div class="schema-nav-title">1. AI Gateway Usage Logs</div>
+              <div class="schema-nav-desc">Collects token counts, models, and departments from AI proxy layers.</div>
+            </div>
+
+            <div class="schema-nav-item" id="schema-nav-licenses" onclick="selectSchema('licenses')">
+              <div class="schema-nav-title">2. SaaS License Assets</div>
+              <div class="schema-nav-desc">Tracks seat counts, cost metrics, and user lists for asset duplicate auditing.</div>
+            </div>
+
+            <div class="schema-nav-item" id="schema-nav-roi" onclick="selectSchema('roi')">
+              <div class="schema-nav-title">3. Business ROI Attributions</div>
+              <div class="schema-nav-desc">Toggles project gains, comparing Non-AI benchmarks to modern AI performance.</div>
+            </div>
+
+            <div class="schema-nav-item" id="schema-nav-cloud" onclick="selectSchema('cloud')">
+              <div class="schema-nav-title">4. Broad Infrastructure Feed</div>
+              <div class="schema-nav-desc">Imports standard server cluster/database costs (AWS/GCP/ERP) for scaling.</div>
+            </div>
+          </div>
+
+          <div class="panel-white">
+            <h2 class="panel-title-md" id="schema-preview-title">AI Gateway Usage Logs (JSON Schema)</h2>
+            <p class="panel-description" id="schema-preview-desc">Upload this format via API POST request to `/api/v1/telemetry/tokens` or export as CSV to standard logs.</p>
+            
+            <div class="code-container">
+              <button class="btn-copy-code" onclick="copySchemaCode()">Copy Schema</button>
+              <pre id="schema-code-block"></pre>
+            </div>
+
+            <div class="chart-header" style="margin-bottom:0;">
+              <div>
+                <h3 class="chart-title">Seed Mock Data</h3>
+                <p class="panel-description" style="margin-bottom:0; font-size: 0.85rem;">Download a sample CSV to feed directly into spreadsheets for testing.</p>
+              </div>
+              <button class="btn-secondary" onclick="downloadSampleCSV()">Download CSV</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- EDIT ALERTS MODAL -->
+  <div class="modal-overlay" id="edit-alerts-modal">
+    <div class="modal-container">
+      <h2 class="modal-title">Edit alerts</h2>
+      
+      <div class="owner-row-box">
+        <div class="owner-avatar-icon">
+          <svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+        </div>
+        <div class="owner-info">
+          <div class="owner-name" id="modal-key-name">Elizabeth Smith's API Key</div>
+          <div class="owner-desc" id="modal-key-spend">Total spend in June: $9,994.35</div>
+        </div>
+      </div>
+
+      <div class="modal-form-group">
+        <div class="modal-form-row">
+          <div>
+            <label class="modal-label">Set spend limit</label>
+            <input type="text" class="input-styled" id="modal-spend-limit" value="$1,000">
+          </div>
+          <div>
+            <label class="modal-label">Frequency</label>
+            <select class="input-styled" id="modal-spend-freq">
+              <option value="weekly">Weekly</option>
+              <option selected value="monthly">Monthly</option>
+              <option value="annually">Annually</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-form-group">
+        <label class="modal-label">Notify me when spend reaches</label>
+        <div class="badges-select-row" id="modal-alerts-row">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+
+      <div class="modal-form-group">
+        <label class="modal-label" id="modal-key-owner-notified">Elizabeth Smith will always receive alerts. Choose who else to notify.</label>
+        <select class="input-styled">
+          <option selected>Teammates</option>
+          <option>Audit Lead</option>
+          <option>CFO Admin Group</option>
+          <option>Direct Manager Only</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-text" onclick="closeAlertModal()">Cancel</button>
+        <button class="btn-update-lime" onclick="submitAlertChanges()">Update</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Logic File -->
+  <script src="app.js"></script>
+</body>
+</html>
