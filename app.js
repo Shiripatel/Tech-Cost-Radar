@@ -167,18 +167,20 @@ window.addEventListener('DOMContentLoaded', () => {
   initSpendChart();
   selectSchema('tokens');
   calculateSimulatorResult();
+  renderCalculatorModels();
+  recalcUnitEconomics();
 });
 
 // Tab Switching System
 function switchTab(tabId) {
   const contents = document.querySelectorAll('.tab-content');
   const tabs = document.querySelectorAll('.tab-btn');
-  
+
   contents.forEach(content => content.classList.remove('active'));
   tabs.forEach(tab => tab.classList.remove('active'));
-  
+
   document.getElementById(tabId).classList.add('active');
-  
+
   // Find which tab button corresponds
   const targetBtn = Array.from(tabs).find(t => t.getAttribute('onclick').includes(tabId));
   if (targetBtn) targetBtn.classList.add('active');
@@ -189,15 +191,15 @@ function renderApiKeys() {
   const tbody = document.getElementById('api-keys-table-body');
   if (!tbody) return;
   tbody.innerHTML = '';
-  
+
   apiKeys.forEach(k => {
     const formattedSpend = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(k.juneSpend);
     const formattedLimit = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(k.limit);
-    
+
     // Status color badge
     let statusClass = 'active';
     if (k.alertStatus === 'Breached') statusClass = 'inactive'; // uses standard style mapping
-    
+
     let riskBadge = '';
     if (k.risk === 'High') {
       riskBadge = `<span class="kpi-badge down" style="font-size:0.8rem; padding:0.25rem 0.5rem;">High Threat</span>`;
@@ -206,7 +208,7 @@ function renderApiKeys() {
     } else {
       riskBadge = `<span class="kpi-badge up" style="font-size:0.8rem; padding:0.25rem 0.5rem;">Healthy</span>`;
     }
-    
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>
@@ -232,7 +234,7 @@ function renderVendorOverlaps() {
   const container = document.getElementById('vendor-overlaps-list');
   if (!container) return;
   container.innerHTML = '';
-  
+
   vendorOverlaps.forEach(o => {
     const item = document.createElement('div');
     item.className = 'overlap-item';
@@ -274,27 +276,27 @@ function openAlertModal(keyId) {
     alerts: ['50%', '80%'],
     risk: 'Low'
   };
-  
+
   activeModalKeyId = keyObj.id;
-  
+
   document.getElementById('modal-key-name').innerText = keyObj.name;
-  document.getElementById('modal-key-spend').innerText = `Total spend in June: $${keyObj.juneSpend.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  document.getElementById('modal-key-spend').innerText = `Total spend in June: $${keyObj.juneSpend.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   document.getElementById('modal-spend-limit').value = `$${keyObj.limit.toLocaleString()}`;
   document.getElementById('modal-spend-freq').value = keyObj.frequency;
   document.getElementById('modal-key-owner-notified').innerText = `${keyObj.owner} will always receive alerts. Choose who else to notify.`;
-  
+
   // Render notification threshold badges
   renderModalAlertBadges(keyObj.alerts);
-  
+
   document.getElementById('edit-alerts-modal').classList.add('active');
 }
 
 function renderModalAlertBadges(activeAlerts) {
   const row = document.getElementById('modal-alerts-row');
   row.innerHTML = '';
-  
+
   const standardThresholds = ['50%', '80%', '90%'];
-  
+
   standardThresholds.forEach(t => {
     const isSelected = activeAlerts.includes(t);
     const btn = document.createElement('button');
@@ -303,7 +305,7 @@ function renderModalAlertBadges(activeAlerts) {
     btn.onclick = () => toggleModalBadge(t);
     row.appendChild(btn);
   });
-  
+
   // 100% button is locked as required by reference mockup
   const lockedBtn = document.createElement('button');
   lockedBtn.className = 'badge-toggle-btn locked';
@@ -311,7 +313,7 @@ function renderModalAlertBadges(activeAlerts) {
     <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
      100%`;
   row.appendChild(lockedBtn);
-  
+
   // Plus sign button to add arbitrary alert threshold range
   const plusBtn = document.createElement('button');
   plusBtn.className = 'badge-add-btn';
@@ -319,7 +321,7 @@ function renderModalAlertBadges(activeAlerts) {
   plusBtn.onclick = () => {
     const newPct = prompt('Enter notification trigger percentage (e.g. 75%):');
     if (newPct && newPct.trim() !== '') {
-      const sanitized = newPct.replace('%','').trim() + '%';
+      const sanitized = newPct.replace('%', '').trim() + '%';
       toggleModalBadge(sanitized);
     }
   };
@@ -329,7 +331,7 @@ function renderModalAlertBadges(activeAlerts) {
 function toggleModalBadge(percentageStr) {
   const keyObj = apiKeys.find(k => k.id === activeModalKeyId);
   if (!keyObj) return;
-  
+
   if (keyObj.alerts.includes(percentageStr)) {
     keyObj.alerts = keyObj.alerts.filter(x => x !== percentageStr);
   } else {
@@ -348,17 +350,17 @@ function submitAlertChanges() {
   const limitValue = document.getElementById('modal-spend-limit').value.replace(/[^0-9.]/g, '');
   const parsedLimit = parseFloat(limitValue);
   const freq = document.getElementById('modal-spend-freq').value;
-  
+
   if (isNaN(parsedLimit) || parsedLimit <= 0) {
     alert('Please enter a valid spent limit amount.');
     return;
   }
-  
+
   const keyObj = apiKeys.find(k => k.id === activeModalKeyId);
   if (keyObj) {
     keyObj.limit = parsedLimit;
     keyObj.frequency = freq;
-    
+
     // Recalculate risk rating Mock
     if (keyObj.juneSpend > keyObj.limit) {
       keyObj.alertStatus = 'Breached';
@@ -373,26 +375,26 @@ function submitAlertChanges() {
       keyObj.alertStatus = 'Normal';
       keyObj.risk = 'Low';
     }
-    
+
     renderApiKeys();
   }
-  
+
   closeAlertModal();
 }
 
 // Chart.js Setup
 function initSpendChart() {
   const ctx = document.getElementById('spendChart').getContext('2d');
-  
+
   // Weekly Default Data (similar to screenshot)
   const defaultLabels = ['June 01', 'June 08', 'June 15', 'June 22', 'June 29', 'July 06', 'July 13'];
-  
+
   // Department Cost Series
-  const dataEng = [3.0, 3.1, 2.8, 1.2, 3.0, 3.2, 3.2]; 
-  const dataSupport = [0.8, 0.4, 0.5, 0.8, 0.7, 0.5, 0.7]; 
-  const dataMarketing = [0.4, 0.2, 0.1, 0.3, 0.2, 0.3, 0.2]; 
+  const dataEng = [3.0, 3.1, 2.8, 1.2, 3.0, 3.2, 3.2];
+  const dataSupport = [0.8, 0.4, 0.5, 0.8, 0.7, 0.5, 0.7];
+  const dataMarketing = [0.4, 0.2, 0.1, 0.3, 0.2, 0.3, 0.2];
   const dataOps = [0.3, 0.3, 0.1, 0.1, 0.4, 0.2, 0.4];
-  
+
   // Calculate aggregate trend line overlay
   const dataTrendLine = [];
   for (let i = 0; i < defaultLabels.length; i++) {
@@ -457,7 +459,7 @@ function initSpendChart() {
           stacked: true,
           grid: { color: 'rgba(0, 0, 0, 0.04)' },
           ticks: {
-            callback: function(val) { return '$' + val + 'K'; }
+            callback: function (val) { return '$' + val + 'K'; }
           }
         }
       },
@@ -468,7 +470,7 @@ function initSpendChart() {
         },
         tooltip: {
           callbacks: {
-            label: function(context) {
+            label: function (context) {
               return context.dataset.label + ': $' + context.parsed.y + 'K';
             }
           }
@@ -484,9 +486,9 @@ function updateSpendChart(cadence) {
   document.getElementById('ctrl-weekly').classList.remove('active');
   document.getElementById('ctrl-monthly').classList.remove('active');
   document.getElementById('ctrl-' + cadence).classList.add('active');
-  
+
   if (!spendChart) return;
-  
+
   if (cadence === 'daily') {
     spendChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     // Redraw with smaller scale dataset
@@ -497,9 +499,9 @@ function updateSpendChart(cadence) {
     spendChart.data.datasets[4].data = [0.55, 0.62, 0.49, 0.45, 0.60, 0.25, 0.18];
   } else if (cadence === 'weekly') {
     spendChart.data.labels = ['June 01', 'June 08', 'June 15', 'June 22', 'June 29', 'July 06', 'July 13'];
-    spendChart.data.datasets[0].data = [3.0, 3.1, 2.8, 1.2, 3.0, 3.2, 3.2]; 
-    spendChart.data.datasets[1].data = [0.8, 0.4, 0.5, 0.8, 0.7, 0.5, 0.7]; 
-    spendChart.data.datasets[2].data = [0.4, 0.2, 0.1, 0.3, 0.2, 0.3, 0.2]; 
+    spendChart.data.datasets[0].data = [3.0, 3.1, 2.8, 1.2, 3.0, 3.2, 3.2];
+    spendChart.data.datasets[1].data = [0.8, 0.4, 0.5, 0.8, 0.7, 0.5, 0.7];
+    spendChart.data.datasets[2].data = [0.4, 0.2, 0.1, 0.3, 0.2, 0.3, 0.2];
     spendChart.data.datasets[3].data = [0.3, 0.3, 0.1, 0.1, 0.4, 0.2, 0.4];
     spendChart.data.datasets[4].data = [4.3, 3.8, 3.4, 2.2, 4.1, 4.0, 4.3];
   } else if (cadence === 'monthly') {
@@ -510,7 +512,7 @@ function updateSpendChart(cadence) {
     spendChart.data.datasets[3].data = [2.0, 2.4, 4.0, 6.2, 9.8, 13.5];
     spendChart.data.datasets[4].data = [22.0, 28.5, 37.0, 52.0, 75.0, 102.0];
   }
-  
+
   spendChart.update();
 }
 
@@ -518,39 +520,39 @@ function updateSpendChart(cadence) {
 function calculateSimulatorResult() {
   const consolRate = parseFloat(document.getElementById('slider-consolidation').value);
   const reclaimRate = parseFloat(document.getElementById('slider-reclaim').value);
-  
+
   document.getElementById('label-consolidation-pct').innerText = consolRate + '%';
   document.getElementById('label-reclaim-pct').innerText = reclaimRate + '%';
-  
+
   // Math formulation: base redundant license pool total is $2,820/mo
   const baseOverhead = 2820 * 12; // $33,840 annual base overlap waste
   const consolidationSavings = baseOverhead * (consolRate / 100) * 0.70; // 70% efficiency reclaim
   const idleReclaimSavings = baseOverhead * (reclaimRate / 100) * 0.30; // 30% idle reclaim
-  
+
   const totalAnnualSavings = consolidationSavings + idleReclaimSavings;
   const netMarginUplift = (totalAnnualSavings / 245000) * 100; // measured against total spend index baseline
-  
+
   document.getElementById('val-simulated-savings').innerText = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     maximumFractionDigits: 0
   }).format(totalAnnualSavings);
-  
+
   document.getElementById('val-roi-increase').innerText = '+' + netMarginUplift.toFixed(1) + '% Margin Savings';
 }
 
 // Schema Page Dynamic Display
 function selectSchema(schemaName) {
   selectedSchemaName = schemaName;
-  
+
   // Set navbar highlights
   document.getElementById('schema-nav-tokens').classList.remove('active');
   document.getElementById('schema-nav-licenses').classList.remove('active');
   document.getElementById('schema-nav-roi').classList.remove('active');
   document.getElementById('schema-nav-cloud').classList.remove('active');
-  
+
   document.getElementById('schema-nav-' + schemaName).classList.add('active');
-  
+
   // Change code block
   const specObj = schemas[schemaName];
   document.getElementById('schema-preview-title').innerText = specObj.title;
@@ -568,7 +570,7 @@ function copySchemaCode() {
 // Sample CSV Download Builder
 function downloadSampleCSV() {
   let csvContent = "data:text/csv;charset=utf-8,";
-  
+
   if (selectedSchemaName === 'tokens') {
     csvContent += "timestamp,user_id,department,vendor,model,prompt_tokens,completion_tokens,cost_usd,purpose_tag\n";
     csvContent += "2026-07-16T12:00:00Z,usr_01a,Engineering,OpenAI,gpt-4o,1200,400,0.0102,code-completion\n";
@@ -589,13 +591,106 @@ function downloadSampleCSV() {
     csvContent += "2026-07,SAP Cloud,ERP Licenses,Operations,83250.0,0.0\n";
     csvContent += "2026-07,Salesforce,CRM Seats,Sales,48000.0,4800.0\n";
   }
-  
+
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
   link.setAttribute("download", `ai_cost_radar_${selectedSchemaName}_sample.csv`);
   document.body.appendChild(link); // Required for FF
-  
+
   link.click();
   document.body.removeChild(link);
+}
+
+// ==========================================
+// Unit Economics Cost Calculator Module
+// ==========================================
+
+const calculatorModels = [
+  { id: 'gpt56', name: 'GPT-5.6 Sol', inputRate: 5.00, outputRate: 30.00, bulletColor: '#4a72d4' },
+  { id: 'fable5', name: 'Fable 5', inputRate: 10.00, outputRate: 50.00, bulletColor: '#84439c' },
+  { id: 'sonnet5', name: 'Sonnet 5', inputRate: 2.00, outputRate: 10.00, bulletColor: '#5c86bf' },
+  { id: 'deepseek4', name: 'DeepSeek V4 Flash', inputRate: 0.14, outputRate: 0.28, bulletColor: '#4b7b51' }
+];
+
+let selectedCalcModelId = 'gpt56';
+
+function renderCalculatorModels() {
+  const container = document.getElementById('model-rates-container');
+  if (!container) return;
+  container.innerHTML = '';
+
+  calculatorModels.forEach(m => {
+    const card = document.createElement('div');
+    card.id = `calc-card-${m.id}`;
+    card.className = `model-rate-card ${m.id === selectedCalcModelId ? 'active' : ''}`;
+    card.onclick = () => selectCalcModel(m.id);
+
+    card.innerHTML = `
+      <div class="model-rate-name">
+        <span class="model-rate-bullet" style="background-color: ${m.bulletColor};"></span>
+        ${m.name}
+      </div>
+      <div class="model-rate-prices">
+        <div>$${m.inputRate.toFixed(2)} / 1M input</div>
+        <div>$${m.outputRate.toFixed(2)} / 1M output</div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+function selectCalcModel(modelId) {
+  selectedCalcModelId = modelId;
+
+  // Highlight visually
+  const cards = document.querySelectorAll('.model-rate-card');
+  cards.forEach(c => c.classList.remove('active'));
+
+  const activeCard = document.getElementById(`calc-card-${modelId}`);
+  if (activeCard) activeCard.classList.add('active');
+
+  recalcUnitEconomics();
+}
+
+function recalcUnitEconomics() {
+  const inputTokensInput = document.getElementById('calc-input-tokens');
+  const cachedTokensInput = document.getElementById('calc-cached-tokens');
+  const outputTokensInput = document.getElementById('calc-output-tokens');
+  const tasksMonthInput = document.getElementById('calc-tasks-month');
+
+  if (!inputTokensInput || !cachedTokensInput || !outputTokensInput || !tasksMonthInput) return;
+
+  const inputTokens = parseFloat(inputTokensInput.value) || 0;
+  const cachedTokens = parseFloat(cachedTokensInput.value) || 0;
+  const outputTokens = parseFloat(outputTokensInput.value) || 0;
+  const tasksMonth = parseFloat(tasksMonthInput.value) || 0;
+
+  const model = calculatorModels.find(m => m.id === selectedCalcModelId);
+  if (!model) return;
+
+  // Prompt cache pricing discount is 90% (pays 10% of standard input token price)
+  const discountFactor = 0.10;
+
+  // Calculate cost per single task execution (per token is rate / 1M)
+  const inputCost = (inputTokens * model.inputRate) / 1000000;
+  const cachedCost = (cachedTokens * model.inputRate * discountFactor) / 1000000;
+  const outputCost = (outputTokens * model.outputRate) / 1000000;
+
+  const taskCost = inputCost + cachedCost + outputCost;
+  const monthlyCost = taskCost * tasksMonth;
+
+  // Update UI Elements
+  document.getElementById('calc-estimate-model-title').innerText = model.name;
+  document.getElementById('calc-banner-task-count').innerText = `${tasksMonth.toLocaleString('en-US')} tasks`;
+  document.getElementById('calc-banner-total-cost').innerText = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  }).format(monthlyCost);
+
+  document.getElementById('calc-footer-task-cost').innerText = `$${taskCost.toFixed(3)}`;
+  document.getElementById('calc-footer-usage').innerText = `${tasksMonth.toLocaleString('en-US')} tasks/month`;
+  document.getElementById('calc-footer-model').innerText = model.name;
 }
