@@ -501,6 +501,93 @@ a {
     margin-bottom: var(--xxl);
 }
 
+/* ===== PRODUCT PAGES / INFO HUB ===== */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--lg);
+    margin-top: var(--xxl);
+}
+
+.product-card {
+    display: block;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-none);
+    padding: var(--lg);
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.product-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+}
+
+.product-pill {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 2;
+    color: var(--mute);
+    background: var(--surface-card);
+    padding: 2px 8px;
+    border-radius: var(--r-sm);
+    margin-bottom: var(--md);
+}
+
+.product-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: var(--sm);
+}
+
+.product-card p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--body);
+    margin-bottom: var(--md);
+}
+
+.product-kpi {
+    display: flex;
+    align-items: baseline;
+    gap: var(--xs);
+}
+
+.product-kpi strong {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.product-kpi span {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--mute);
+}
+
+.product-table-wrap {
+    margin-top: var(--xxl);
+    overflow-x: auto;
+    border: 1px solid var(--hairline);
+}
+
+.product-list {
+    padding-left: var(--lg);
+    color: var(--body);
+    display: grid;
+    gap: var(--xs);
+}
+
+.product-list li {
+    font-size: 14px;
+    line-height: 2;
+}
+
 /* ===== PROBLEM SECTION ===== */
 .problem {
     background: var(--canvas);

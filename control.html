@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Cost Radar — Control</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <a href="index.html" class="top-nav-logo" style="text-decoration:none;color:inherit;">[+] AI_COST_RADAR</a>
+      <div class="top-nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Overview</a>
+        <a href="control.html">Control</a>
+        <a href="insights.html">Insights</a>
+        <a href="https://github.com/Shiripatel/Tech-Cost-Radar" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-top-row">
+        <div class="logo-group">
+          <span class="app-subtitle">Control · Policy & spend guardrails</span>
+          <h1 class="app-logo">Spend Control Center</h1>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-content">
+      <section class="tab-content active">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-title-row"><span class="kpi-title">[x] Active API Keys</span></div>
+            <div class="kpi-val-row"><div class="kpi-value"><span>24</span></div><span class="kpi-badge down">3 breached</span></div>
+            <div class="kpi-footnote">Spend controls are enforced at the key level</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title-row"><span class="kpi-title">[+] Alert Thresholds</span></div>
+            <div class="kpi-val-row"><div class="kpi-value"><span>90%</span></div><span class="kpi-badge up">baseline</span></div>
+            <div class="kpi-footnote">Teams are notified before limits are exhausted</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title-row"><span class="kpi-title">[-] Policy Gaps</span></div>
+            <div class="kpi-val-row"><div class="kpi-value"><span>2</span></div><span class="kpi-badge down">review needed</span></div>
+            <div class="kpi-footnote">Shadow AI tools still need approval routing</div>
+          </div>
+        </div>
+
+        <div class="panel-white">
+          <h3 style="margin-bottom:1rem;">Guardrail operating view</h3>
+          <div class="table-wrapper">
+            <table class="metric-table">
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Status</th>
+                  <th>Owner</th>
+                  <th>Next action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Monthly API key quotas</td><td><span class="kpi-badge up">Enabled</span></td><td>Finance Ops</td><td>Review July threshold changes</td></tr>
+                <tr><td>Vendor approval workflow</td><td><span class="kpi-badge up">Live</span></td><td>IT Security</td><td>Approve 2 pending requests</td></tr>
+                <tr><td>License recapture rules</td><td><span class="kpi-badge down">Needs review</span></td><td>Procurement</td><td>Reconcile overlap seats</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
