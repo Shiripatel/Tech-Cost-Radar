@@ -386,6 +386,10 @@ function submitAlertChanges() {
 function initSpendChart() {
   const ctx = document.getElementById('spendChart').getContext('2d');
 
+  // Set OpenCode Chart.js Defaults
+  Chart.defaults.font.family = "'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', 'ui-monospace', 'Courier New', monospace";
+  Chart.defaults.color = '#424245';
+
   // Weekly Default Data (similar to screenshot)
   const defaultLabels = ['June 01', 'June 08', 'June 15', 'June 22', 'June 29', 'July 06', 'July 13'];
 
@@ -410,36 +414,36 @@ function initSpendChart() {
         {
           label: 'Engineering (Model API)',
           data: dataEng,
-          backgroundColor: '#354839', // Dark Moss primary
+          backgroundColor: '#201d1d', // Ink
           stack: 'CombinedSpend',
-          borderRadius: 4
+          borderRadius: 0
         },
         {
           label: 'Customer Support',
           data: dataSupport,
-          backgroundColor: '#dbbbc1', // Pink overlay
+          backgroundColor: '#424245', // Body
           stack: 'CombinedSpend',
-          borderRadius: 4
+          borderRadius: 0
         },
         {
           label: 'Marketing Content',
           data: dataMarketing,
-          backgroundColor: '#9ebae8', // Light blue
+          backgroundColor: '#9a9898', // Ash
           stack: 'CombinedSpend',
-          borderRadius: 4
+          borderRadius: 0
         },
         {
           label: 'Operations (RPA)',
           data: dataOps,
-          backgroundColor: '#d8b9ed', // Lavender
+          backgroundColor: '#f1eeee', // Surface card
           stack: 'CombinedSpend',
-          borderRadius: 4
+          borderRadius: 0
         },
         {
           label: 'Aggregate Trend Line',
           data: dataTrendLine,
           type: 'line',
-          borderColor: '#1d1d1f',
+          borderColor: '#0f0000', // Ink Deep
           borderWidth: 2,
           pointRadius: 0,
           fill: false,
@@ -453,12 +457,16 @@ function initSpendChart() {
       scales: {
         x: {
           stacked: true,
-          grid: { display: false }
+          grid: { display: false },
+          ticks: {
+            font: { family: "'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace" }
+          }
         },
         y: {
           stacked: true,
-          grid: { color: 'rgba(0, 0, 0, 0.04)' },
+          grid: { color: 'rgba(15, 0, 0, 0.12)' }, // Hairline Grid
           ticks: {
+            font: { family: "'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace" },
             callback: function (val) { return '$' + val + 'K'; }
           }
         }
@@ -466,9 +474,15 @@ function initSpendChart() {
       plugins: {
         legend: {
           position: 'bottom',
-          labels: { boxWidth: 12, padding: 15, font: { family: 'Inter' } }
+          labels: {
+            boxWidth: 12,
+            padding: 15,
+            font: { family: "'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace", size: 11 }
+          }
         },
         tooltip: {
+          titleFont: { family: "'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace" },
+          bodyFont: { family: "'Berkeley Mono', 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace" },
           callbacks: {
             label: function (context) {
               return context.dataset.label + ': $' + context.parsed.y + 'K';
