@@ -2,6 +2,7 @@
    AI Cost Radar — Landing Page JavaScript
    Counter animations, Intersection Observer scroll reveals, hero chart,
    navbar scroll effect, mobile hamburger toggle
+   OpenCode theme: muted chart palette
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,17 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===== Animated counter =====
-    function animateCounter(el, target, suffix) {
+    function animateCounter(el, target) {
         const duration = 2000;
         const startTime = performance.now();
-        const startVal = 0;
 
         function tick(now) {
             const elapsed = now - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            // Ease out cubic
             const ease = 1 - Math.pow(1 - progress, 3);
-            const current = Math.round(startVal + (target - startVal) * ease);
+            const current = Math.round(target * ease);
             el.textContent = current;
             if (progress < 1) requestAnimationFrame(tick);
         }
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const problemObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry, i) => {
             if (entry.isIntersecting) {
-                setTimeout(() => entry.target.classList.add('visible'), i * 120);
+                setTimeout(() => entry.target.classList.add('visible'), i * 100);
                 problemObserver.unobserve(entry.target);
             }
         });
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const target = parseInt(entry.target.getAttribute('data-target'), 10);
-                animateCounter(entry.target, target, '');
+                animateCounter(entry.target, target);
                 counterObserver.unobserve(entry.target);
             }
         });
@@ -74,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const fadeTargets = document.querySelectorAll('.bento-card, .step-card, .integ-card, .metric-card');
     fadeTargets.forEach(el => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(16px)';
-        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        el.style.transform = 'translateY(12px)';
+        el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     });
     const fadeObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -88,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
     fadeTargets.forEach(el => fadeObserver.observe(el));
 
-    // ===== Hero Chart (mini spend chart) =====
+    // ===== Hero Chart (mini spend chart — dark BG inside preview card) =====
     const heroCtx = document.getElementById('heroChart');
     if (heroCtx) {
         new Chart(heroCtx.getContext('2d'), {
@@ -99,8 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     {
                         label: 'AI Spend',
                         data: [8200, 11400, 14100, 18500, 16900, 22300, 28600],
-                        borderColor: '#818cf8',
-                        backgroundColor: 'rgba(129,140,248,0.08)',
+                        borderColor: '#007aff',
+                        backgroundColor: 'rgba(0,122,255,0.08)',
                         fill: true,
                         tension: 0.4,
                         pointRadius: 0,
@@ -126,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 scales: {
                     x: {
                         display: true,
-                        ticks: { color: 'rgba(255,255,255,0.2)', font: { size: 9, family: "'JetBrains Mono'" } },
+                        ticks: { color: 'rgba(255,255,255,0.25)', font: { size: 10, family: "'JetBrains Mono'" } },
                         grid: { display: false },
                         border: { display: false },
                     },
@@ -140,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===== Bento Chart 1 (cost analytics mini chart) =====
+    // ===== Bento Chart 1 (cost analytics — light BG, OpenCode palette) =====
     const bentoCtx = document.getElementById('bentoChart1');
     if (bentoCtx) {
         new Chart(bentoCtx.getContext('2d'), {
@@ -151,23 +150,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     {
                         label: 'GPT-4o',
                         data: [18500, 12200, 8800, 6200, 2100, 1800],
-                        backgroundColor: '#818cf8',
-                        borderRadius: 3,
-                        barPercentage: 0.7,
+                        backgroundColor: '#201d1d',
+                        borderRadius: 2,
+                        barPercentage: 0.65,
                     },
                     {
                         label: 'Claude',
                         data: [14200, 8100, 4200, 3800, 1200, 900],
-                        backgroundColor: 'rgba(244,114,182,0.6)',
-                        borderRadius: 3,
-                        barPercentage: 0.7,
+                        backgroundColor: '#646262',
+                        borderRadius: 2,
+                        barPercentage: 0.65,
                     },
                     {
                         label: 'Gemini',
                         data: [4100, 6900, 2100, 5200, 800, 400],
-                        backgroundColor: 'rgba(34,197,94,0.5)',
-                        borderRadius: 3,
-                        barPercentage: 0.7,
+                        backgroundColor: '#9a9898',
+                        borderRadius: 2,
+                        barPercentage: 0.65,
                     }
                 ]
             },
@@ -180,8 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         position: 'top',
                         align: 'end',
                         labels: {
-                            color: 'rgba(255,255,255,0.4)',
-                            font: { size: 9, family: "'JetBrains Mono'" },
+                            color: '#646262',
+                            font: { size: 10, family: "'JetBrains Mono'" },
                             boxWidth: 8,
                             boxHeight: 8,
                             padding: 10,
@@ -191,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 scales: {
                     x: {
                         stacked: true,
-                        ticks: { color: 'rgba(255,255,255,0.25)', font: { size: 9, family: "'JetBrains Mono'" } },
+                        ticks: { color: '#9a9898', font: { size: 10, family: "'JetBrains Mono'" } },
                         grid: { display: false },
                         border: { display: false },
                     },
