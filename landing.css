@@ -181,13 +181,12 @@ main, section, nav {
 /* ===== HERO ===== */
 .hero {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.1fr 0.9fr;
     align-items: center;
     gap: var(--xxl);
     max-width: 1100px;
-    /* hero-tui-mockup is full-bleed within ~1100px */
     margin: 0 auto;
-    padding: 152px var(--lg) var(--section);
+    padding: 120px var(--lg) 64px;
 }
 
 .hero-glow {
@@ -210,19 +209,19 @@ main, section, nav {
     background: var(--surface-dark);
     padding: 2px 8px;
     border-radius: var(--r-sm);
-    margin-bottom: var(--xl);
+    margin-bottom: var(--md);
     text-decoration: none;
 }
 
 /* typography.display-xl */
 .hero-title {
     font-family: var(--font);
-    font-size: 38px;
+    font-size: 34px;
     font-weight: 700;
-    line-height: 1.5;
+    line-height: 1.4;
     letter-spacing: 0;
     color: var(--ink);
-    margin-bottom: var(--lg);
+    margin-bottom: var(--md);
 }
 
 .hero-gradient-text {
@@ -237,8 +236,8 @@ main, section, nav {
     font-weight: 400;
     line-height: 1.5;
     color: var(--body);
-    max-width: 480px;
-    margin-bottom: var(--xxl);
+    max-width: 520px;
+    margin-bottom: var(--xl);
 }
 
 /* Hero CTAs */
@@ -246,7 +245,7 @@ main, section, nav {
     display: flex;
     gap: var(--md);
     flex-wrap: wrap;
-    margin-bottom: var(--xxl);
+    margin-bottom: var(--xl);
 }
 
 /* button-primary */
@@ -294,8 +293,10 @@ main, section, nav {
 /* Hero proof stats */
 .hero-proof {
     display: flex;
-    gap: var(--xxl);
+    gap: var(--xl);
     align-items: center;
+    flex-wrap: wrap;
+    padding-top: 0.25rem;
 }
 
 .proof-stat {
@@ -339,7 +340,8 @@ main, section, nav {
     background: var(--surface-dark);
     border-radius: var(--r-none);
     overflow: hidden;
-    animation: none;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: none;
 }
 
 .preview-topbar {
@@ -483,7 +485,7 @@ main, section, nav {
 .section-inner {
     max-width: var(--max-w);
     margin: 0 auto;
-    padding: var(--section) var(--lg);
+    padding: 64px var(--lg);
 }
 
 /* badge-section-label */
@@ -511,7 +513,7 @@ main, section, nav {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--lg);
-    margin-top: var(--xxl);
+    margin-top: var(--xl);
 }
 
 .product-card {
@@ -522,6 +524,7 @@ main, section, nav {
     padding: var(--lg);
     text-decoration: none;
     transition: border-color 0.2s ease, transform 0.2s ease;
+    box-shadow: none;
 }
 
 .product-card:hover {
@@ -597,6 +600,11 @@ main, section, nav {
 .problem {
     background: var(--canvas);
     border-top: 1px solid var(--hairline);
+    padding-top: 0;
+}
+
+.problem-grid, .bento-grid, .integration-grid, .metrics-grid {
+    gap: var(--lg);
 }
 
 .problem-grid {
@@ -1203,7 +1211,7 @@ main, section, nav {
 @media (max-width: 1024px) {
     .hero {
         grid-template-columns: 1fr;
-        padding-top: var(--section);
+        padding-top: 96px;
     }
 
     .hero-visual {
