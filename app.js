@@ -159,6 +159,7 @@ const schemas = {
 let spendChart = null;
 let activeModalKeyId = null;
 let selectedSchemaName = 'tokens';
+let recommendationsApproved = false;
 
 // Initialize App
 window.addEventListener('DOMContentLoaded', () => {
@@ -169,6 +170,10 @@ window.addEventListener('DOMContentLoaded', () => {
   calculateSimulatorResult();
   renderCalculatorModels();
   recalcUnitEconomics();
+  recalcApprovedSavings();
+  renderCancelSeats();
+  initForecastChart();
+  recalcForecast();
 });
 
 // Tab Switching System
@@ -708,3 +713,210 @@ function recalcUnitEconomics() {
   document.getElementById('calc-footer-usage').innerText = `${tasksMonth.toLocaleString('en-US')} tasks/month`;
   document.getElementById('calc-footer-model').innerText = model.name;
 }
+
+// ==========================================
+// recommendations HUB & FORECAST LOGIC
+// ==========================================
+
+function recalcApprovedSavings() {
+  const check1 = document.getElementById('rec-check-1')?.checked;
+  const check2 = document.getElementById('rec-check-2')?.checked;
+  const check3 = document.getElementById('rec-check-3')?.checked;
+  const check4 = document.getElementById('rec-check-4')?.checked;
+
+  let monthly = 0;
+  if (check1) monthly += 1540;
+  if (check2) monthly += 880;
+  if (check3) monthly += 4800;
+  if (check4) monthly += 12000;
+
+  const annual = monthly * 12;
+  const marginImpact = (monthly / 245000 * 100).toFixed(1);
+
+  const monthlyEl = document.getElementById('auth-monthly-savings');
+  const annualEl = document.getElementById('auth-annual-savings');
+  const marginEl = document.getElementById('auth-margin-impact');
+
+  if (monthlyEl) monthlyEl.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(monthly);
+  if (annualEl) annualEl.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(annual);
+  if (marginEl) marginEl.innerText = `+${marginImpact}%`;
+}
+
+function approveRecommendations() {
+  recommendationsApproved = true;
+  recalcApprovedSavings();
+  alert('Executive Decision Committed! Signed deprovisioning orders have been dispatched. The forecast simulation baseline has been updated to reflect these savings.');
+  recalcForecast();
+}
+
+let cancelSeats = [
+  { id: 'seat_1', seat: 'sarah.jenkins@enterprise.com', product: 'Jasper AI Copywriter', lastDate: '36 days ago', rate: 95, detail: '0 API queries (30d)', status: 'active' },
+  { id: 'seat_2', seat: 'developer-42@prod-env', product: 'Tabnine Pro Developer', lastDate: '42 days ago', rate: 15, detail: 'Duplicate IDE assistant', status: 'active' },
+  { id: 'seat_3', seat: 'marketing-lead@team-acme', product: 'Jasper AI Copywriter', lastDate: '45 days ago', rate: 95, detail: '0 API queries (30d)', status: 'active' },
+  { id: 'seat_4', seat: 'sales-rep-18@crm-sync', product: 'Salesforce CRM Seat', lastDate: '50 days ago', rate: 150, detail: 'Zero telemetry logs', status: 'active' },
+  { id: 'seat_5', seat: 'sales-rep-22@crm-sync', product: 'Salesforce CRM Seat', lastDate: '51 days ago', rate: 150, detail: 'Zero telemetry logs', status: 'active' }
+];
+
+function renderCancelSeats() {
+  const tbody = document.getElementById('cancel-seats-table-body');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  cancelSeats.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.id = `row-${s.id}`;
+    if (s.status === 'cancelled') {
+      tr.style.opacity = '0.5';
+      tr.style.textDecoration = 'line-through';
+    }
+
+    const statusBtn = s.status === 'active'
+      ? `<button class="btn-secondary" style="padding: 4px 8px; font-size: 0.8rem;" onclick="cancelReprovisionSeat('${s.id}')">Reclaim Seat</button>`
+      : `<span class="badge-status inactive" style="background:#f8d7da; color:#721c24; border:none; padding:4px 8px; border-radius:4px; text-decoration:none !important; display:inline-block;">Reclaimed</span>`;
+
+    tr.innerHTML = `
+      <td><strong>${s.seat}</strong></td>
+      <td>${s.product}</td>
+      <td>${s.lastDate}</td>
+      <td>$${s.rate} / mo</td>
+      <td><span class="kpi-badge down" style="border:none; padding:2px 6px;">${s.detail}</span></td>
+      <td>${statusBtn}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function cancelReprovisionSeat(seatId) {
+  const seat = cancelSeats.find(s => s.id === seatId);
+  if (!seat) return;
+  seat.status = 'cancelled';
+  renderCancelSeats();
+  alert(`Deprovisioning request dispatched for ${seat.seat}. Estimated monthly savings of $${seat.rate} will be processed immediately upon workspace release.`);
+}
+
+let forecastChart = null;
+
+function recalcForecast() {
+  const growthSlider = document.getElementById('forecast-growth-slider');
+  const creepSlider = document.getElementById('forecast-creep-slider');
+  if (!growthSlider || !creepSlider) return;
+
+  const growth = parseFloat(growthSlider.value);
+  const creep = parseFloat(creepSlider.value);
+
+  document.getElementById('forecast-growth-label').innerText = `${growth}%`;
+  document.getElementById('forecast-creep-label').innerText = `${creep}%`;
+
+  const baseAI = 106000;
+  const baseOther = 139000;
+
+  let savedMonthly = 0;
+  if (recommendationsApproved) {
+    const check1 = document.getElementById('rec-check-1')?.checked;
+    const check2 = document.getElementById('rec-check-2')?.checked;
+    const check3 = document.getElementById('rec-check-3')?.checked;
+    const check4 = document.getElementById('rec-check-4')?.checked;
+    if (check1) savedMonthly += 1540;
+    if (check2) savedMonthly += 880;
+    if (check3) savedMonthly += 4800;
+    if (check4) savedMonthly += 12000;
+  }
+
+  const nextMonthSpend = Math.round(245000 + (baseAI * (growth / 100) * 0.3) + (baseOther * (creep / 100) * 0.3) - savedMonthly);
+  const nextQuarterSpend = Math.round(245000 + (baseAI * (growth / 100)) + (baseOther * (creep / 100)) - (savedMonthly * 3));
+
+  document.getElementById('forecast-next-month').innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(nextMonthSpend);
+  document.getElementById('forecast-next-quarter').innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(nextQuarterSpend);
+
+  updateForecastChart(growth, creep, savedMonthly);
+}
+
+function initForecastChart() {
+  const canvas = document.getElementById('forecastChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  forecastChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Current', 'Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5'],
+      datasets: [
+        {
+          label: 'Baseline (Unoptimized Path)',
+          data: [245000, 248000, 252000, 257000, 263000, 270000],
+          borderColor: '#424245',
+          borderWidth: 1.5,
+          borderDash: [4, 4],
+          fill: false,
+          pointRadius: 2,
+          tension: 0.2
+        },
+        {
+          label: 'Optimized Path (Approved Commitments)',
+          data: [245000, 233000, 235000, 237000, 240000, 244000],
+          borderColor: '#201d1d',
+          borderWidth: 2,
+          fill: false,
+          pointRadius: 4,
+          tension: 0.2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            boxWidth: 12,
+            font: {
+              family: "'Berkeley Mono', 'JetBrains Mono', monospace"
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          grid: { borderColor: '#e1dbdb', color: '#f1eeee' },
+          ticks: {
+            font: { family: "'Berkeley Mono', 'JetBrains Mono', monospace" },
+            callback: function (val) {
+              return '$' + (val / 1000) + 'K';
+            }
+          }
+        },
+        x: {
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
+function updateForecastChart(growth, creep, savedMonthly) {
+  if (!forecastChart) return;
+
+  const pointsUnoptimized = [245000];
+  const pointsOptimized = [245000];
+
+  const baseAI = 106000;
+  const baseOther = 139000;
+
+  for (let m = 1; m <= 5; m++) {
+    const rateGrowth = 1 + (growth / 100) * 0.1 * m;
+    const rateCreep = 1 + (creep / 100) * 0.05 * m;
+
+    const unopt = Math.round(245000 + (baseAI * (rateGrowth - 1)) + (baseOther * (rateCreep - 1)));
+    pointsUnoptimized.push(unopt);
+
+    const opt = Math.round(unopt - savedMonthly);
+    pointsOptimized.push(opt);
+  }
+
+  forecastChart.data.datasets[0].data = pointsUnoptimized;
+  forecastChart.data.datasets[1].data = pointsOptimized;
+  forecastChart.update();
+}
+

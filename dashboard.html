@@ -51,18 +51,20 @@
         </div>
         <div class="header-actions">
           <button class="btn-primary"
-            onclick="alert('Export Executive Intelligence Report — connect live data feeds to enable.')">Export Report</button>
+            onclick="alert('Export Executive Intelligence Report — connect live data feeds to enable.')">Export
+            Report</button>
         </div>
       </div>
 
-      <!-- Nav Tabs -->
+      <!-- Nav Tabs (Decision-Centric CFO Copilot Layout) -->
       <nav class="tabs-navigation">
-        <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
-        <button class="tab-btn" onclick="switchTab('briefing')">Briefing</button>
-        <button class="tab-btn" onclick="switchTab('api-keys')">API keys</button>
-        <button class="tab-btn" onclick="switchTab('vendor-overlap')">Vendor Overlap</button>
-        <button class="tab-btn" onclick="switchTab('it-spend')">IT Spend & ERP</button>
-        <button class="tab-btn" onclick="switchTab('unit-economics')">Unit Economics</button>
+        <button class="tab-btn active" onclick="switchTab('recommendations')">What to Approve?</button>
+        <button class="tab-btn" onclick="switchTab('overspending')">Where is Overspending?</button>
+        <button class="tab-btn" onclick="switchTab('cancel-list')">What to Cancel?</button>
+        <button class="tab-btn" onclick="switchTab('roi-attribution')">What is AI ROI?</button>
+        <button class="tab-btn" onclick="switchTab('department-waste')">Dept Software Waste</button>
+        <button class="tab-btn" onclick="switchTab('vendor-overlap')">Vendor Overlaps</button>
+        <button class="tab-btn" onclick="switchTab('run-rate-forecast')">Next Month's Spend?</button>
         <button class="tab-btn" onclick="switchTab('integrations')">Integrations</button>
         <button class="tab-btn" onclick="switchTab('data-schema')">Data Requirements</button>
       </nav>
@@ -71,12 +73,115 @@
     <!-- Content -->
     <main class="dashboard-content">
 
-      <!-- ============ TAB 1: OVERVIEW ============ -->
-      <section id="overview" class="tab-content active">
+      <!-- ============ TAB 1: RECOMMENDATIONS HUB — "What to Approve?" ============ -->
+      <section id="recommendations" class="tab-content active">
+        <div class="cards-layout-2col">
+          <div class="panel-white">
+            <h2>Pending Executive Approvals</h2>
+            <p style="color: var(--mute); margin-bottom: 1.5rem;">The IT audit scanner identified 4 high-impact
+              consolidation opportunities. Select which actions you want to authorize today.</p>
+
+            <ul class="audit-checklist" style="list-style: none; padding: 0;">
+              <li class="audit-checklist-item"
+                style="border: 1px solid var(--charcoal); padding: 1rem; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1rem;">
+                <input type="checkbox" id="rec-check-1" class="audit-checkbox" checked
+                  onchange="recalcApprovedSavings()"
+                  style="margin-top: 0.25rem; width: 1.2rem; height: 1.2rem; cursor: pointer;">
+                <div class="audit-checklist-text" style="flex: 1;">
+                  <div class="audit-checklist-title" style="font-weight: 700;">[+] Consolidate Developer IDE Assistants
+                  </div>
+                  <div class="audit-checklist-desc"
+                    style="color: var(--mute); font-size: 0.85rem; margin-top: 0.25rem;">Standardize on GitHub Copilot
+                    Enterprise and cancel redundant Tabnine licenses. Reclaims 64 duplicate developer seats.</div>
+                  <div style="font-size: 0.85rem; margin-top: 0.5rem; font-weight: 700; color: var(--accent);">Monthly
+                    Savings: $1,540</div>
+                </div>
+              </li>
+              <li class="audit-checklist-item"
+                style="border: 1px solid var(--charcoal); padding: 1rem; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1rem;">
+                <input type="checkbox" id="rec-check-2" class="audit-checkbox" checked
+                  onchange="recalcApprovedSavings()"
+                  style="margin-top: 0.25rem; width: 1.2rem; height: 1.2rem; cursor: pointer;">
+                <div class="audit-checklist-text" style="flex: 1;">
+                  <div class="audit-checklist-title" style="font-weight: 700;">[-] Deprovision Idle Copywriting SaaS
+                    Seats</div>
+                  <div class="audit-checklist-desc"
+                    style="color: var(--mute); font-size: 0.85rem; margin-top: 0.25rem;">Remove 9 inactive marketing
+                    seats on Jasper.ai with zero API query telemetry in 30 days.</div>
+                  <div style="font-size: 0.85rem; margin-top: 0.5rem; font-weight: 700; color: var(--accent);">Monthly
+                    Savings: $880</div>
+                </div>
+              </li>
+              <li class="audit-checklist-item"
+                style="border: 1px solid var(--charcoal); padding: 1rem; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1rem;">
+                <input type="checkbox" id="rec-check-3" class="audit-checkbox" onchange="recalcApprovedSavings()"
+                  style="margin-top: 0.25rem; width: 1.2rem; height: 1.2rem; cursor: pointer;">
+                <div class="audit-checklist-text" style="flex: 1;">
+                  <div class="audit-checklist-title" style="font-weight: 700;">[!] Consolidate CRM and Sales Desk Seats
+                  </div>
+                  <div class="audit-checklist-desc"
+                    style="color: var(--mute); font-size: 0.85rem; margin-top: 0.25rem;">Reassign or cancel 32
+                    unallocated Salesforce Enterprise seats currently showing zero activity.</div>
+                  <div style="font-size: 0.85rem; margin-top: 0.5rem; font-weight: 700; color: var(--accent);">Monthly
+                    Savings: $4,800</div>
+                </div>
+              </li>
+              <li class="audit-checklist-item"
+                style="border: 1px solid var(--charcoal); padding: 1rem; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 1rem;">
+                <input type="checkbox" id="rec-check-4" class="audit-checkbox" checked
+                  onchange="recalcApprovedSavings()"
+                  style="margin-top: 0.25rem; width: 1.2rem; height: 1.2rem; cursor: pointer;">
+                <div class="audit-checklist-text" style="flex: 1;">
+                  <div class="audit-checklist-title" style="font-weight: 700;">[+] Implement Semantic LLM Proxy Cache
+                  </div>
+                  <div class="audit-checklist-desc"
+                    style="color: var(--mute); font-size: 0.85rem; margin-top: 0.25rem;">Deploy caching headers on
+                    developer gateways (LiteLLM) to intercept repeating code generation sequences.</div>
+                  <div style="font-size: 0.85rem; margin-top: 0.5rem; font-weight: 700; color: var(--accent);">Monthly
+                    Savings: $12,000</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="panel-white" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h2>CFO Copilot Directive</h2>
+              <p style="color: var(--mute); margin-bottom: 1.5rem;">Review the simulated outcome. Approving these
+                recommendations generates signed deprovisioning orders sent to SaaS procurement.</p>
+
+              <div class="projection-value-box" style="margin-bottom: 1.5rem;">
+                <span class="kpi-title" style="text-align: center;">Authorized Monthly Savings</span>
+                <div class="projection-num" id="auth-monthly-savings"
+                  style="font-size: 2.8rem; font-weight: 700; text-align: center; color: var(--accent);">$14,420</div>
+              </div>
+
+              <div class="projection-value-box" style="margin-bottom: 1.5rem;">
+                <span class="kpi-title" style="text-align: center;">Projected Annual Recovery</span>
+                <div class="projection-num" id="auth-annual-savings"
+                  style="font-size: 2.2rem; font-weight: 700; text-align: center; color: var(--text-primary);">$173,040
+                </div>
+              </div>
+
+              <div class="kpi-card" style="margin-top: 1rem; border-color: var(--charcoal); cursor: default;">
+                <div class="kpi-footnote">Estimated margin improvement impact: <strong
+                    id="auth-margin-impact">+5.9%</strong></div>
+              </div>
+            </div>
+
+            <button class="btn-primary" style="width: 100%; margin-top: 2rem; padding: 12px;"
+              onclick="approveRecommendations()">
+              Approve Selected Actions Today
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TAB 2: OVERSPEND MONITOR — "Where is Overspending?" ============ -->
+      <section id="overspending" class="tab-content">
         <!-- KPI Cards — 6 Tiles -->
         <div class="kpi-grid">
-
-          <div class="kpi-card" onclick="switchTab('api-keys')">
+          <div class="kpi-card">
             <div class="kpi-title-row">
               <span class="kpi-title">[+] Total AI Spend</span>
             </div>
@@ -86,8 +191,7 @@
             </div>
             <div class="kpi-footnote">YTD across all models & vendors</div>
           </div>
-
-          <div class="kpi-card" onclick="switchTab('unit-economics')">
+          <div class="kpi-card">
             <div class="kpi-title-row">
               <span class="kpi-title">[+] Price / 1M Tokens</span>
             </div>
@@ -97,8 +201,7 @@
             </div>
             <div class="kpi-footnote">Blended avg across GPT / Claude / Gemini</div>
           </div>
-
-          <div class="kpi-card" onclick="switchTab('unit-economics')">
+          <div class="kpi-card">
             <div class="kpi-title-row">
               <span class="kpi-title">[+] Model Economy ROI</span>
             </div>
@@ -108,8 +211,7 @@
             </div>
             <div class="kpi-footnote">Cost gap vs cheapest viable model</div>
           </div>
-
-          <div class="kpi-card" onclick="switchTab('vendor-overlap')">
+          <div class="kpi-card">
             <div class="kpi-title-row">
               <span class="kpi-title">[-] Vendor License Waste</span>
             </div>
@@ -119,8 +221,7 @@
             </div>
             <div class="kpi-footnote">Overlapping seats: Copilot / Tabnine / Jasper</div>
           </div>
-
-          <div class="kpi-card" onclick="switchTab('api-keys')">
+          <div class="kpi-card">
             <div class="kpi-title-row">
               <span class="kpi-title">[x] Active API Keys</span>
             </div>
@@ -130,8 +231,7 @@
             </div>
             <div class="kpi-footnote">Keys with spend &gt; $500/mo flagged</div>
           </div>
-
-          <div class="kpi-card" onclick="switchTab('it-spend')">
+          <div class="kpi-card">
             <div class="kpi-title-row">
               <span class="kpi-title">[+] IT Run Rate</span>
             </div>
@@ -141,13 +241,16 @@
             </div>
             <div class="kpi-footnote">Cloud + ERP + SaaS monthly baseline</div>
           </div>
-
         </div>
 
         <!-- Main Chart Card -->
-        <div class="chart-container-panel">
+        <div class="chart-container-panel" style="margin-top: 1.5rem;">
           <div class="chart-header">
-            <h3 class="chart-title">Total spend over time</h3>
+            <div>
+              <h3 class="chart-title">Runaway Cost Trends & Anomalies</h3>
+              <p style="color:var(--mute); margin: 0; font-size:0.8rem;">Identify departments/endpoints deviating from
+                budget bounds (>2σ standard deviations).</p>
+            </div>
             <div class="chart-controls">
               <button id="ctrl-daily" onclick="updateSpendChart('daily')">Daily</button>
               <button class="active" id="ctrl-weekly" onclick="updateSpendChart('weekly')">Weekly</button>
@@ -159,123 +262,15 @@
           </div>
         </div>
 
-        <!-- Breakdown Table -->
-        <div class="panel-white">
-          <h3 style="margin-bottom:1rem;">Top AI Subsidies by Department</h3>
-          <div class="table-wrapper">
-            <table class="metric-table">
-              <thead>
-                <tr>
-                  <th>Department Name</th>
-                  <th>Core Models Deployed</th>
-                  <th>Avg. Vol / Month</th>
-                  <th>Monthly Spend</th>
-                  <th>Business ROI Impact</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Engineering</strong></td>
-                  <td>GitHub Copilot, Claude 3.5, GPT-4o</td>
-                  <td>14.8M tokens</td>
-                  <td>$42,500</td>
-                  <td><span class="kpi-badge up">+ 28% Dev Velocity</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Customer Support</strong></td>
-                  <td>GPT-4o mini, custom agent gateways</td>
-                  <td>32.1M tokens</td>
-                  <td>$31,200</td>
-                  <td><span class="kpi-badge up">- 40% Ticket Resolution Time</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Marketing & Copy</strong></td>
-                  <td>Jasper, ChatGPT Enterprise</td>
-                  <td>4.5M tokens</td>
-                  <td>$18,800</td>
-                  <td><span class="kpi-badge down">- 2% Traffic Lead Value</span></td>
-                </tr>
-                <tr>
-                  <td><strong>Operations (RPA)</strong></td>
-                  <td>Llama-3-70B (Hosted self), Gemini 1.5</td>
-                  <td>10.2M tokens</td>
-                  <td>$13,500</td>
-                  <td><span class="kpi-badge up">+ 15% Data Mining Speed</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ TAB 2: BRIEFING ============ -->
-      <section id="briefing" class="tab-content">
-        <div class="cards-layout-2col">
-          <div class="panel-white">
-            <h2>CFO Executive Summary Brief</h2>
-            <p style="color: var(--mute); margin-bottom: 1rem;">AI Costs are escalating quickly. This briefing
-              summarizes cost trends,
-              optimizations, audit guidelines, and vendor overlap opportunities for Q3.</p>
-            <div style="line-height:1.6;">
-              <p><strong>[+] Key Overrun Drivers:</strong> The Engineering team's transition to Claude 3.5 Sonnet has
-                increased prompt token depth by <strong>45%</strong>. A large amount of this is redundant system prompts
-                occurring in parallel test environments.</p>
-              <br>
-              <p><strong>[+] Recommendation:</strong> Implement a semantic caching gateway (for instance, Helicone or
-                LiteLLM gateway layers) to prevent sending duplicate codebase prompts to LLMs. This could cut
-                Engineering AI costs by <strong>$12,000 monthly</strong>.</p>
-              <br>
-              <p><strong>[-] Contract Renewals:</strong> The ChatGPT Enterprise agreement (100 seats) is up for review
-                in
-                45 days. We currently see an average seat utilization of only <strong>60%</strong>. We can safely
-                down-scale to 60 seats or transition inactive users to OpenAI API keys via local chatbots.</p>
-            </div>
-          </div>
-          <div class="panel-white">
-            <h2>Finance & Audit Checklist</h2>
-            <p style="color: var(--mute); margin-bottom: 1rem;">Strategic audits recommended to control technology spend
-              sprawl.</p>
-            <ul class="audit-checklist">
-              <li class="audit-checklist-item">
-                <input type="checkbox" class="audit-checkbox" checked>
-                <div class="audit-checklist-text">
-                  <div class="audit-checklist-title">[x] Enforce Gateway Tracking</div>
-                  <div class="audit-checklist-desc">Route all internal developer AI tokens through an API proxy key with
-                    user metadata logs.</div>
-                </div>
-              </li>
-              <li class="audit-checklist-item">
-                <input type="checkbox" class="audit-checkbox">
-                <div class="audit-checklist-text">
-                  <div class="audit-checklist-title">[+] Consolidate Redundant SaaS AI Tools</div>
-                  <div class="audit-checklist-desc">Identify duplicate functionalities across departments (e.g. Jasper
-                    vs Copy.ai).</div>
-                </div>
-              </li>
-              <li class="audit-checklist-item">
-                <input type="checkbox" class="audit-checkbox">
-                <div class="audit-checklist-text">
-                  <div class="audit-checklist-title">[+] Setup Seat Recapture Rules</div>
-                  <div class="audit-checklist-desc">Automatically alert managers of any Copilot seats showing zero
-                    prompt queries in 30 days.</div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ TAB 3: API KEYS ============ -->
-      <section id="api-keys" class="tab-content">
-        <div class="panel-white">
+        <!-- API keys & Credentials with Limits -->
+        <div class="panel-white" style="margin-top: 1.5rem;">
           <div class="chart-header">
             <div>
-              <h2>Active API Credentials & Cost Limits</h2>
-              <p style="margin-bottom:0; color: var(--mute);">Allocate monthly spend limits directly per API Key
-                to restrict runaway auto-scaling scripts.</p>
+              <h2>Budget Limit Enforcements by API Key</h2>
+              <p style="margin-bottom:0; color: var(--mute);">Allocate monthly spend thresholds directly or block
+                runaway keys immediately.</p>
             </div>
-            <button class="btn-primary"
-              onclick="openAlertModal('New Service Master Key', 0, 'New key - configure limits')">
+            <button class="btn-primary" onclick="openAlertModal('key_new')">
               <span>+ Create Key</span>
             </button>
           </div>
@@ -294,6 +289,33 @@
               </thead>
               <tbody id="api-keys-table-body">
                 <!-- Rows loaded via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TAB 3: SUBSCRIPTION RATIONALIZER — "What should we cancel?" ============ -->
+      <section id="cancel-list" class="tab-content">
+        <div class="panel-white">
+          <h2>Inactive License Reclamation Audit</h2>
+          <p style="color: var(--mute); margin-bottom: 1.5rem;">These specific user seats show zero telemetry queries or
+            clicks in the last 30 days. Cancel them to reclaim budget.</p>
+
+          <div class="table-wrapper">
+            <table class="metric-table">
+              <thead>
+                <tr>
+                  <th>User Seat / Subscription</th>
+                  <th>Product License</th>
+                  <th>Last Telemetry Date</th>
+                  <th>Monthly Unit Rate</th>
+                  <th>Utilization Details</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="cancel-seats-table-body">
+                <!-- Dynamically loaded / simulated by app.js -->
               </tbody>
             </table>
           </div>
@@ -355,59 +377,58 @@
         </div>
       </section>
 
-      <!-- ============ TAB 5: IT SPEND & ERP ============ -->
-      <section id="it-spend" class="tab-content">
+      <!-- ============ TAB 5: DEPARTMENT WASTE MATRIX — "Which departments waste software?" ============ -->
+      <section id="department-waste" class="tab-content">
         <div class="cards-layout-2col">
           <div class="panel-white">
-            <h2>Unified IT Spend Portfolio</h2>
-            <p style="color: var(--mute); margin-bottom: 1rem;">AI Cost Radar is designed to scale into all IT expense
-              tracks—including cloud
-              infrastructure (AWS/Azure), ERP licensing (SAP/Oracle), CRM systems (Salesforce), and database layers.</p>
+            <h2>Department License Allocation & Waste Matrix</h2>
+            <p style="color: var(--mute); margin-bottom: 1.5rem;">Below is the software seat usage breakdown across main
+              divisions. Review where seat allocation exceeds active utilization.</p>
 
             <div class="table-wrapper">
               <table class="metric-table">
                 <thead>
                   <tr>
-                    <th>IT Asset Category</th>
-                    <th>Vendor/Platform</th>
-                    <th>Current Seat Price</th>
-                    <th>Subscribers</th>
-                    <th>Monthly Run-rate</th>
-                    <th>Audit Risk Status</th>
+                    <th>Department</th>
+                    <th>Subscribed Software Platforms</th>
+                    <th>Seats Allocated</th>
+                    <th>Active Seats (30d)</th>
+                    <th>Waste Index Score</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>ERP Suite</strong></td>
-                    <td>SAP S/4HANA Cloud</td>
-                    <td>$185 / user</td>
-                    <td>450 Users</td>
-                    <td>$83,250</td>
-                    <td><span class="badge-status active">Active & Clean</span></td>
+                    <td><strong>Engineering</strong></td>
+                    <td>GitHub Copilot, JetBrains, AWS, Datadog</td>
+                    <td>180 Seats</td>
+                    <td>176 Seats</td>
+                    <td><span class="badge-status active"
+                        style="background: #d4edda; color: #155724; border:none; padding: 2px 8px;">2% Waste</span></td>
                   </tr>
                   <tr>
-                    <td><strong>CRM & Sales</strong></td>
-                    <td>Salesforce Enterprise</td>
-                    <td>$150 / user</td>
-                    <td>320 Users</td>
-                    <td>$48,000</td>
-                    <td><span class="kpi-badge down">32 Unused Seats</span></td>
+                    <td><strong>Customer Support</strong></td>
+                    <td>Zendesk, Intercom, Custom LLM Gateway</td>
+                    <td>120 Seats</td>
+                    <td>114 Seats</td>
+                    <td><span class="badge-status active"
+                        style="background: #fff3cd; color: #856404; border:none; padding: 2px 8px;">5% Waste</span></td>
                   </tr>
                   <tr>
-                    <td><strong>Developer IDE</strong></td>
-                    <td>JetBrains Fleet & IDEs</td>
-                    <td>$22 / user</td>
-                    <td>180 Users</td>
-                    <td>$3,960</td>
-                    <td><span class="badge-status inactive">Unassigned</span></td>
+                    <td><strong>Marketing & Copy</strong></td>
+                    <td>Jasper, Copy.ai, Hubspot, ChatGPT Enterprise</td>
+                    <td>115 Seats</td>
+                    <td>68 Seats</td>
+                    <td><span class="kpi-badge down"
+                        style="padding: 2px 8px; font-weight:normal; border-radius: 4px;">41% Waste</span></td>
                   </tr>
                   <tr>
-                    <td><strong>AI Token Gateway</strong></td>
-                    <td>LiteLLM Enterprise</td>
-                    <td>Usage-based</td>
-                    <td>All Channels</td>
-                    <td>$12,500</td>
-                    <td><span class="badge-status active">Optimized</span></td>
+                    <td><strong>Sales Ops</strong></td>
+                    <td>Salesforce Enterprise, ZoomInfo, Slack</td>
+                    <td>320 Seats</td>
+                    <td>288 Seats</td>
+                    <td><span class="kpi-badge down"
+                        style="padding: 2px 8px; font-weight:normal; border-radius: 4px; background: #f8d7da; color: #721c24;">10%
+                        Waste</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -415,43 +436,111 @@
           </div>
 
           <div class="panel-white">
-            <h2>Total IT Enterprise Forecast</h2>
-            <p style="color: var(--mute); margin-bottom: 1rem;">Model the financial projection of blending modern AI
-              workloads with existing
-              core IT infrastructure overhead.</p>
+            <h2>Reclamation Heatmap By Role</h2>
+            <p style="color: var(--mute); margin-bottom: 1.5rem;">Department heads are alerted automatically when seat
+              utilization drops below 75% for two billing cycles.</p>
 
             <div class="roi-metric-flex">
-              <span class="roi-metric-label">Current Monthly IT Run-rate</span>
-              <span class="roi-metric-val">$147,710</span>
+              <span class="roi-metric-label">Engineering Reclaim Value</span>
+              <span class="roi-metric-val">$0 / mo</span>
             </div>
             <div class="roi-metric-flex">
-              <span class="roi-metric-label">AI Token Growth Projection (20% QoQ)</span>
-              <span class="roi-metric-val">+$2,500</span>
+              <span class="roi-metric-label">Customer Support Reclaim Value</span>
+              <span class="roi-metric-val">$480 / mo</span>
             </div>
             <div class="roi-metric-flex">
-              <span class="roi-metric-label">ERP Renewal Uplift Estimate (5%)</span>
-              <span class="roi-metric-val">+$4,162 / mo</span>
+              <span class="roi-metric-label">Marketing & Copy Reclaim Value</span>
+              <span class="roi-metric-val">$3,760 / mo</span>
             </div>
             <div class="roi-metric-flex" style="border-bottom:none;">
-              <span class="roi-metric-label">Potential Unified Savings</span>
-              <span class="roi-metric-val benefit">$35,800 / yr</span>
+              <span class="roi-metric-label">Sales Ops Reclaim Value</span>
+              <span class="roi-metric-val benefit" style="color:var(--accent);">$4,800 / mo</span>
             </div>
 
-            <button class="btn-secondary" style="width: 100%; margin-top: 1.5rem;"
-              onclick="alert('In production, this initiates automatic connector integrations with ServiceNow ITAM & ERP Billing APIs.')">
-              Manage IT Integrations
+            <button class="btn-secondary" style="width: 100%; margin-top: 1.5rem;" onclick="switchTab('cancel-list')">
+              View Detailed Cancel List
             </button>
           </div>
         </div>
       </section>
 
-      <!-- ============ TAB: UNIT ECONOMICS ============ -->
-      <section id="unit-economics" class="tab-content">
+      <!-- ============ TAB 4: AI ROI ATTRIBUTION — "What is the ROI of AI?" ============ -->
+      <section id="roi-attribution" class="tab-content">
+        <div class="cards-layout-2col" style="margin-bottom: 2rem;">
+          <div class="panel-white">
+            <h2>Business ROI Attributions</h2>
+            <p style="color: var(--mute); margin-bottom: 1.5rem;">Attends AI token expenditures directly to productivity
+              yield. We evaluate performance relative to manual labour equivalents.</p>
+
+            <div class="table-wrapper">
+              <table class="metric-table">
+                <thead>
+                  <tr>
+                    <th>Project Area</th>
+                    <th>Monthly AI Cost</th>
+                    <th>Equivalent Manual Cost</th>
+                    <th>Efficiency Impact</th>
+                    <th>Net ROI Yield</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Developer Copilots</strong></td>
+                    <td>$42,500</td>
+                    <td>$90,000</td>
+                    <td><span class="kpi-badge up">+28% Dev Speed</span></td>
+                    <td><strong style="color: var(--accent);">+111% ROI</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Support Bots</strong></td>
+                    <td>$31,200</td>
+                    <td>$86,000</td>
+                    <td><span class="kpi-badge up">-40% Ticket Resolution</span></td>
+                    <td><strong style="color: var(--accent);">+175% ROI</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Marketing Writing</strong></td>
+                    <td>$18,800</td>
+                    <td>$15,000</td>
+                    <td><span class="kpi-badge down">-2% Lead Conversion</span></td>
+                    <td><strong style="color: #721c24;">-20% ROI (Inefficient)</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Operations (RPA)</strong></td>
+                    <td>$13,500</td>
+                    <td>$30,000</td>
+                    <td><span class="kpi-badge up">+15% Extraction Speed</span></td>
+                    <td><strong style="color: var(--accent);">+122% ROI</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel-white">
+            <h2>Yield & Efficiency Statistics</h2>
+            <p style="color: var(--mute); margin-bottom: 1.5rem;">Blended metrics across all deployed neural modules.
+            </p>
+            <div class="roi-metric-flex">
+              <span class="roi-metric-label">Gross AI Expenditure</span>
+              <span class="roi-metric-val">$106,000 / mo</span>
+            </div>
+            <div class="roi-metric-flex">
+              <span class="roi-metric-label">Displaced Manual Costs</span>
+              <span class="roi-metric-val">$221,000 / mo</span>
+            </div>
+            <div class="roi-metric-flex" style="border-bottom:none;">
+              <span class="roi-metric-label">Net Financial Yield</span>
+              <span class="roi-metric-val benefit" style="color:var(--accent);">+$115,000 / mo</span>
+            </div>
+          </div>
+        </div>
+
         <div style="text-align: center; margin-bottom: 2rem;">
           <span
-            style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.15em; color: var(--mute); font-weight: 700;">Unit
-            Economics</span>
-          <h2 style="font-size: 1.8rem; margin-top: 0.3rem;">Your model choice can really impact costs.</h2>
+            style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.15em; color: var(--mute); font-weight: 700;">Marginal
+            Token Cost Estimator</span>
+          <h2 style="font-size: 1.8rem; margin-top: 0.3rem;">Calculate Unit Economics by Model Choice</h2>
         </div>
 
         <div class="calculator-panel">
@@ -466,8 +555,7 @@
               <div style="font-size: 0.8rem; color: var(--mute); margin-bottom: 0.15rem;" id="calc-banner-task-count">
                 20,000 tasks</div>
               <div id="calc-banner-total-cost" style="font-size: 2.4rem; font-weight: 700; letter-spacing: -0.03em;">
-                $1,200
-              </div>
+                $1,200</div>
             </div>
           </div>
 
@@ -475,12 +563,10 @@
             <!-- Left inputs -->
             <div class="calc-inputs-col">
               <div class="calc-sub-title">Task inputs</div>
-
               <div class="prompt-text-box">
                 <textarea id="calc-prompt-input"
                   oninput="recalcUnitEconomics()">Draft a 150-word cold outreach email to this prospect referencing their recent press release. Map their news to our Enterprise Tier value propositions.</textarea>
               </div>
-
               <div class="inputs-grid-2x2">
                 <div class="grid-input-item">
                   <span class="grid-input-label">Input tokens / task</span>
@@ -504,7 +590,6 @@
             <!-- Right models -->
             <div class="calc-models-col">
               <div class="calc-sub-title">Model rate keys</div>
-
               <div class="model-rates-grid" id="model-rates-container">
                 <!-- Populated inside app.js -->
               </div>
@@ -515,6 +600,69 @@
             <span class="footer-strip-item">Task cost: <strong id="calc-footer-task-cost">$0.060</strong></span>
             <span class="footer-strip-item">Usage: <strong id="calc-footer-usage">20,000 tasks/month</strong></span>
             <span class="footer-strip-item">Model: <strong id="calc-footer-model">GPT-5.6 Sol</strong></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ TAB 7: RUN RATE FORECAST — "What will next month's spend be?" ============ -->
+      <section id="run-rate-forecast" class="tab-content">
+        <div class="cards-layout-2col">
+          <div class="panel-white">
+            <h2>Unified IT Enterprise Forecast</h2>
+            <p style="color: var(--mute); margin-bottom: 1.5rem;">Model next month's expected invoices based on neural
+              api volume trends, seat growth creep, and fixed SaaS licenses.</p>
+
+            <div style="height: 280px; margin-bottom: 1.5rem;">
+              <canvas id="forecastChart"></canvas>
+            </div>
+          </div>
+
+          <div class="panel-white" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h2>Projection Variables</h2>
+              <p style="color: var(--mute); margin-bottom: 1.5rem;">Slide to adjust compounding growth vectors and trace
+                expected outcomes.</p>
+
+              <div class="slider-group" style="margin-bottom: 1.25rem;">
+                <div class="slider-labels"
+                  style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.4rem;">
+                  <span>AI API Token Growth (MoM)</span>
+                  <span id="forecast-growth-label" style="font-weight: 700;">20%</span>
+                </div>
+                <input type="range" class="slider-input" id="forecast-growth-slider" min="0" max="100" value="20"
+                  oninput="recalcForecast()" style="width: 100%; cursor: pointer;">
+              </div>
+
+              <div class="slider-group" style="margin-bottom: 1.25rem;">
+                <div class="slider-labels"
+                  style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.4rem;">
+                  <span>Unoptimized Seat Creep Index</span>
+                  <span id="forecast-creep-label" style="font-weight: 700;">10%</span>
+                </div>
+                <input type="range" class="slider-input" id="forecast-creep-slider" min="0" max="50" value="10"
+                  oninput="recalcForecast()" style="width: 100%; cursor: pointer;">
+              </div>
+
+              <div class="roi-metric-flex" style="margin-top: 1.5rem;">
+                <span class="roi-metric-label">Current Base Monthly IT Spend</span>
+                <span class="roi-metric-val">$245,000</span>
+              </div>
+              <div class="roi-metric-flex">
+                <span class="roi-metric-label">Predicted Next Month Spend</span>
+                <span class="roi-metric-val" id="forecast-next-month"
+                  style="font-weight: 700; color:var(--text-primary);">$259,510</span>
+              </div>
+              <div class="roi-metric-flex" style="border-bottom: none;">
+                <span class="roi-metric-label">Forecast Next Quarter Run Rate</span>
+                <span class="roi-metric-val benefit" id="forecast-next-quarter"
+                  style="font-weight: 700; color: var(--accent);">$291,240</span>
+              </div>
+            </div>
+
+            <button class="btn-primary" style="width: 100%; margin-top: 2rem;"
+              onclick="alert('Saving forecast parameters to database... Selected variables are locked for Q3 budget approvals.')">
+              Commit Budget Parameters
+            </button>
           </div>
         </div>
       </section>
