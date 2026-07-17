@@ -22,11 +22,21 @@
     <div class="top-nav-inner">
       <a href="index.html" class="top-nav-logo" style="text-decoration:none;color:inherit;">[+] AI_COST_RADAR</a>
       <div class="top-nav-links">
+        <div class="top-nav-dropdown">
+          <button class="top-nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Product ▾</button>
+          <div class="top-nav-dropdown-menu">
+            <a href="dashboard.html" onclick="switchTab('overview'); return false;">Overview</a>
+            <a href="control.html">Control</a>
+            <a href="insights.html">Insights</a>
+          </div>
+        </div>
         <a href="index.html">Home</a>
-        <a href="dashboard.html" onclick="switchTab('overview'); return false;">Overview</a>
-        <a href="control.html">Control</a>
-        <a href="insights.html">Insights</a>
-        <a href="https://github.com/Shiripatel/Tech-Cost-Radar" target="_blank">GitHub</a>
+        <a href="dashboard.html" onclick="switchTab('overview'); return false;">Suite</a>
+        <div class="nav-action-group">
+          <a href="#" class="nav-pill nav-pill-muted">Sign In</a>
+          <a href="#" class="nav-pill nav-pill-dark">Sign Up</a>
+          <a href="dashboard.html" class="nav-pill nav-pill-accent">Request Demo</a>
+        </div>
       </div>
     </div>
   </nav>

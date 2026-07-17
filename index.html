@@ -22,11 +22,24 @@
     <div class="nav-inner">
       <a href="/" class="nav-logo">[+] AI_COST_RADAR</a>
       <div class="nav-links" id="nav-links">
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-toggle" id="product-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+            Product <span class="dropdown-caret">▾</span>
+          </button>
+          <div class="nav-dropdown-menu" id="product-dropdown-menu">
+            <a href="dashboard.html">Overview</a>
+            <a href="control.html">Control</a>
+            <a href="insights.html">Insights</a>
+          </div>
+        </div>
         <a href="index.html">Home</a>
-        <a href="dashboard.html">Overview</a>
-        <a href="control.html">Control</a>
-        <a href="insights.html">Insights</a>
-        <a href="dashboard.html" class="nav-cta">Open Dashboard →</a>
+        <a href="#product-suite">Suite</a>
+        <a href="#how-it-works">How it works</a>
+        <div class="nav-cta-group">
+          <a href="#" class="nav-btn nav-btn-muted">Sign In</a>
+          <a href="#" class="nav-btn nav-btn-dark">Sign Up</a>
+          <a href="dashboard.html" class="nav-btn nav-btn-accent">Request Demo</a>
+        </div>
       </div>
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
