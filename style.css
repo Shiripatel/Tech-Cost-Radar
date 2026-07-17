@@ -62,7 +62,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 48px;
+  height: 56px;
 }
 
 .top-nav-logo {
@@ -71,11 +71,13 @@
   font-weight: 700;
   color: var(--canvas);
   letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .top-nav-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  align-items: center;
 }
 
 .top-nav-links a {
@@ -115,7 +117,7 @@ body {
 
 /* Header & Navigation Rules */
 .app-header {
-  border-bottom: 2px solid var(--hairline-strong);
+  border-bottom: 1px solid var(--hairline);
   padding: 1.5rem 0 0 0;
   margin-top: 1rem;
 }
@@ -124,7 +126,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .logo-group {
@@ -133,21 +135,22 @@ body {
 }
 
 .app-logo {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--ink);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .app-subtitle {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--mute);
   margin-top: 0.2rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
 }
 
 .header-actions {
@@ -182,7 +185,7 @@ body {
 
 /* Dashboard Content Areas */
 .dashboard-content {
-  padding: 2.5rem 0;
+  padding: 2rem 0 2.5rem;
 }
 
 .tab-content {
