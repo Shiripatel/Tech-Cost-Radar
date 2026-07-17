@@ -203,6 +203,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ===== Consulting facts rotator =====
+    const factSlides = document.querySelectorAll('.fact-slide');
+    const factDots = document.querySelectorAll('.facts-dot');
+    if (factSlides.length && factDots.length) {
+        let factIndex = 0;
+        const cycleFacts = () => {
+            factSlides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === factIndex);
+            });
+            factDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === factIndex);
+            });
+            factIndex = (factIndex + 1) % factSlides.length;
+        };
+        cycleFacts();
+        setInterval(cycleFacts, 3000);
+        factDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                factIndex = parseInt(dot.getAttribute('data-index'), 10);
+                cycleFacts();
+            });
+        });
+    }
+
     // ===== Smooth scroll for anchor links =====
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
