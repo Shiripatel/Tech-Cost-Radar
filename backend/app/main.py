@@ -2,14 +2,17 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import time
+from app.api import auth
 
 app = FastAPI(
     title="TechSpend AI API",
     description="Enterprise Technology Spend Intelligence Platform API",
     version="1.0.0",
     docs_url="/api/docs",
-    openapi_url="/api/openid.json"
+    openapi_url="/api/v1/openapi.json"
 )
+
+app.include_router(auth.router, prefix="/api/v1")
 
 # Standard CORS Middleware setup
 app.add_middleware(

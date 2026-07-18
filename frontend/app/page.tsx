@@ -1,102 +1,67 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between font-mono p-8 selection:bg-blue-500 selection:text-white">
+      {/* Header Grid */}
+      <header className="max-w-6xl w-full mx-auto flex justify-between items-center py-6 border-b border-slate-900">
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+          <span className="font-bold tracking-tight text-white">techspend.ai</span>
+        </div>
+        <div className="flex gap-4 text-xs">
+          <Link href="/login" className="hover:text-blue-400 transition-colors">
+            [ Sign In ]
+          </Link>
+          <Link href="/register" className="text-slate-400 hover:text-white transition-colors">
+            [ Onboard Workspace ]
+          </Link>
+        </div>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Hero content */}
+      <main className="max-w-4xl mx-auto flex-1 flex flex-col justify-center items-center text-center my-12">
+        <div className="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-full px-4 py-1.5 text-xs text-slate-400 mb-6">
+          <span className="bg-blue-500/10 text-blue-400 font-bold px-1.5 py-0.5 rounded text-[10px]">
+            ACTIVE v1.0
+          </span>
+          Enterprise Technology Spend Decision Intelligence
+        </div>
+
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
+          The Bloomberg Terminal for <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
+            Technology Spend
+          </span>
+        </h1>
+
+        <p className="max-w-2xl text-slate-400 text-sm md:text-base leading-relaxed mb-10">
+          Unify IT Asset Management, SaaS Management, Cloud FinOps, and AI cost guardrails
+          into a single decision-centric platform. Transition from passive reporting to active
+          financial intelligence.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Link
+            href="/register"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-8 py-3 rounded transition-colors shadow-lg shadow-blue-500/10"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Provision New Org Tenant
+          </Link>
+          <Link
+            href="/login"
+            className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-sm px-8 py-3 rounded transition-all"
           >
-            Read our docs
-          </a>
+            Access Console
+          </Link>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer Info */}
+      <footer className="max-w-6xl w-full mx-auto border-t border-slate-900 py-6 text-center text-xs text-slate-500">
+        <div>
+          TechSpend AI &copy; 2026. Made for CFOs, CIOs, Procurement and Internal Audit.
+        </div>
       </footer>
     </div>
   );
